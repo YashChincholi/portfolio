@@ -3,6 +3,7 @@ import MagicButton from './ui/MagicButton';
 import { FaLocationArrow } from 'react-icons/fa6';
 import { socialMedia } from '@/data';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const Footer = () => {
   return (
@@ -41,9 +42,13 @@ const Footer = () => {
               key={profile.id}
               className="flex items-center justify-center h-10 w-10 cursor-pointer backdrop-blur-lg backdrop-filter bg-opacity-75 bg-black-200 backdrop-saturate-150 rounded-lg border border-black-300"
             >
-              <a href={profile.url}>
+              <Link
+                href={profile.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <img src={profile.img} alt="profile" width={20} height={20} />
-              </a>
+              </Link>
             </div>
           ))}
         </div>
