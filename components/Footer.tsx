@@ -41,7 +41,9 @@ const Footer = () => {
               key={profile.id}
               className="flex items-center justify-center h-10 w-10 cursor-pointer backdrop-blur-lg backdrop-filter bg-opacity-75 bg-black-200 backdrop-saturate-150 rounded-lg border border-black-300"
             >
-              <img src={profile.img} alt="profile" width={20} height={20} />
+              <a href={profile.url}>
+                <img src={profile.img} alt="profile" width={20} height={20} />
+              </a>
             </div>
           ))}
         </div>
