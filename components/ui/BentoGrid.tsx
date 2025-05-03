@@ -1,14 +1,32 @@
 'use client';
 
 import { cn } from '@/utils/cn';
-import { BackgroundGradientAnimation } from './GradientBg';
-import { GlobeDemo } from './GridGlobe';
-import Lottie from 'react-lottie';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import animationData from '@/data/confetti.json';
 import MagicButton from './MagicButton';
 import { IoCopyOutline } from 'react-icons/io5';
 import Image from 'next/image';
+import { BackgroundGradientAnimation } from './GradientBg';
+
+// Dynamically import the Lottie component to avoid server-side rendering (SSR)
+const Lottie = dynamic(() => import('lottie-react'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full bg-gray-300 animate-pulse rounded-lg"></div>
+  ),
+});
+
+// Dynamically import the GlobeDemo component only when needed
+const GlobeDemo = dynamic(
+  () => import('./GridGlobe').then((mod) => mod.GlobeDemo),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-full bg-gray-300 animate-pulse rounded-lg"></div>
+    ),
+  },
+);
 
 export const BentoGrid = ({
   className,
@@ -49,11 +67,13 @@ export const BentoGridItem = ({
   spareImg?: string;
 }) => {
   const [copied, setCopied] = useState(false);
+
   const handelCopy = () => {
     const text = 'yashchincholi1b@gmail.com';
     navigator.clipboard.writeText(text);
     setCopied(true);
   };
+
   return (
     <div
       className={cn(
@@ -69,10 +89,12 @@ export const BentoGridItem = ({
       <div className={`${id === 6 && 'flex justify-center'} h-full`}>
         <div className="w-full h-full absolute">
           {img && (
-            <img
+            <Image
               src={img}
               alt="img"
               className={cn(imgClassName, 'object-cover object-center')}
+              layout="fill"
+              objectFit="cover"
             />
           )}
         </div>
@@ -80,10 +102,12 @@ export const BentoGridItem = ({
           className={`absolute right-0 -bottom-5 ${id === 5 && 'w-full opacity-80'}`}
         >
           {spareImg && (
-            <img
+            <Image
               src={spareImg}
               alt="spareimg"
               className="object-cover object-center w-full h-full"
+              layout="fill"
+              objectFit="cover"
             />
           )}
         </div>
@@ -131,14 +155,9 @@ export const BentoGridItem = ({
             <div className="mt-5 relative">
               <div className={`absolute -bottom-5 right-0`}>
                 <Lottie
-                  options={{
-                    loop: copied,
-                    autoplay: copied,
-                    animationData,
-                    rendererSettings: {
-                      preserveAspectRatio: 'xMidyMid slice',
-                    },
-                  }}
+                  animationData={animationData}
+                  loop={copied}
+                  autoplay={copied}
                 />
               </div>
               <MagicButton

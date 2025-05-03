@@ -1,13 +1,38 @@
 import React from 'react';
-import { Spotlight } from './ui/Spotlight';
-import { Boxes } from './ui/background-boxes';
-import { TextGenerateEffect } from './ui/TextGenerateEffect';
-import MagicButton from './ui/MagicButton';
+import dynamic from 'next/dynamic';
+import type { FC } from 'react';
+
+const Spotlight = dynamic(
+  () => import('./ui/Spotlight').then((mod) => mod.Spotlight as FC<any>),
+  {
+    ssr: false,
+  },
+);
+
+const Boxes = dynamic(
+  () => import('./ui/background-boxes').then((mod) => mod.Boxes as FC<any>),
+  {
+    ssr: false,
+  },
+);
+
+const TextGenerateEffect = dynamic(
+  () =>
+    import('./ui/TextGenerateEffect').then(
+      (mod) => mod.TextGenerateEffect as FC<any>,
+    ),
+  {
+    ssr: false,
+  },
+);
+
+const MagicButton = dynamic(() => import('./ui/MagicButton'), { ssr: false });
+
 import { FaLocationArrow } from 'react-icons/fa6';
 
 const Hero = () => {
   return (
-    <div className="pt-36 pb-20">
+    <div className="pt-36 pb-20 opacity-0 animate-fadeIn">
       <div>
         <Spotlight
           className="-top-40 -left-10 md:-left-32 md:-top-20 h-screen"
@@ -37,7 +62,7 @@ const Hero = () => {
           />
 
           <p className="text-center md:tracking-wider mb-10 text-sm md:text-lg lg:text-2xl text-blue-100">
-            Hi! I&apos;m Yash, a 3D Web Developer based in Thane,India.
+            Hi! I&apos;m Yash, a 3D Web Developer based in Thane, India.
           </p>
 
           <a href="#about">

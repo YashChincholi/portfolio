@@ -9,12 +9,16 @@ const Footer = () => {
   return (
     <footer className="w-full pb-20 mb-[100px] md:mb-5" id="contact">
       <div className="w-full absolute left-0 -bottom-0 min-h-96">
-        <img
+        <Image
           src="/footer-grid.svg"
           alt="footer"
+          width={1920}
+          height={384}
           className="w-full h-full opacity-50"
+          priority={false}
         />
       </div>
+
       <div className="flex flex-col items-center">
         <h1 className="heading lg:max-w-[45vw]">
           Ready to take <span className="text-purple">your</span> digital
@@ -32,6 +36,7 @@ const Footer = () => {
           />
         </a>
       </div>
+
       <div className="flex justify-between items-center mt-16 md:flex-col flex-row">
         <p className="font-light md:font-normal md:text-base text-sm">
           Copyright © 2024 Yash
@@ -47,7 +52,13 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <img src={profile.img} alt="profile" width={20} height={20} />
+                <Image
+                  src={profile.img}
+                  alt="profile"
+                  width={20}
+                  height={20}
+                  priority={false}
+                />
               </Link>
             </div>
           ))}
