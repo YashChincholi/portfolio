@@ -180,6 +180,10 @@ const config: Config = {
             transform: 'translate(calc(-50% - 0.5rem))',
           },
         },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -193,6 +197,7 @@ const config: Config = {
         fifth: 'moveInCircle 20s ease infinite',
         scroll:
           'scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite',
+        fadeIn: 'fadeIn 1.5s ease-in-out forwards',
       },
     },
   },

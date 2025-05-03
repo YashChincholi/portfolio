@@ -1,5 +1,3 @@
-import Grid from '@/components/Grid';
-import Hero from '@/components/Hero';
 import { FloatingNav } from '@/components/ui/FloatingNavbar';
 import RecentProjects from '@/components/RecentProjects';
 import { navItems } from '@/data';
@@ -7,6 +5,10 @@ import Clients from '@/components/Clients';
 import Experience from '@/components/Experience';
 import Approach from '@/components/Approach';
 import Footer from '@/components/Footer';
+import { withLoader } from '@/lib/withLoader';
+
+const Hero = withLoader(() => import('@/components/Hero'));
+const Grid = withLoader(() => import('@/components/Grid'));
 
 export default function Home() {
   return (

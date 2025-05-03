@@ -19,10 +19,13 @@ const Experience = () => {
             className="flex text-white border-slate-800"
           >
             <div className="flex lg:flex-row flex-col p-3 py-6 md:p-5 lg:p-10 gap-2 lg:items-center">
-              <img
+              <Image
                 src={card.thumbnail}
-                alt="thuambnail"
+                alt={`${card.title} thumbnail`}
+                width={80} // Approx for w-20
+                height={80}
                 className="lg:w-30 md:w-20 w-16"
+                priority={false}
               />
               <div className="ms-5">
                 <h1 className="text-xl md:text-3xl font-bold text-start">
