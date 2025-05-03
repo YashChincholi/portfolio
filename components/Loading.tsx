@@ -1,16 +1,9 @@
-import Image from 'next/image';
+import React from 'react';
 
 const Loading = () => {
   return (
     <div className="w-full h-screen flex items-center justify-center">
-      <Image
-        src="/loading.gif"
-        alt="Loading..."
-        width={600}
-        height={600}
-        priority
-        unoptimized
-      />
+      <video src="/loading.webm" width={600} height={600} autoPlay loop muted />
     </div>
   );
 };

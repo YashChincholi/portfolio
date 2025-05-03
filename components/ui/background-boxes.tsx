@@ -1,76 +1,96 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/utils/cn';
 
+const NUM_ROWS = 40;
+const NUM_COLS = 40;
+
+const colors = [
+  '--sky-300',
+  '--pink-300',
+  '--green-300',
+  '--yellow-300',
+  '--red-300',
+  '--purple-300',
+  '--blue-300',
+  '--indigo-300',
+  '--violet-300',
+];
+
+const getRandomColor = () => {
+  return colors[Math.floor(Math.random() * colors.length)];
+};
+
 export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
-  const rows = new Array(150).fill(1);
-  const cols = new Array(100).fill(1);
-  let colors = [
-    '--sky-300',
-    '--pink-300',
-    '--green-300',
-    '--yellow-300',
-    '--red-300',
-    '--purple-300',
-    '--blue-300',
-    '--indigo-300',
-    '--violet-300',
-  ];
-  const getRandomColor = () => {
-    return colors[Math.floor(Math.random() * colors.length)];
-  };
+  const colorGrid = useMemo(() => {
+    return Array.from({ length: NUM_ROWS }, () =>
+      Array.from({ length: NUM_COLS }, () => getRandomColor()),
+    );
+  }, []);
 
   return (
     <div
       style={{
         transform: `translate(-40%,-60%) skewX(-48deg) skewY(14deg) scale(0.675) rotate(0deg) translateZ(0)`,
+        gridTemplateColumns: `repeat(${NUM_COLS}, 4rem)`,
+        gridTemplateRows: `repeat(${NUM_ROWS}, 2rem)`,
       }}
       className={cn(
-        'absolute left-1/4 p-4 -top-1/4 flex  -translate-x-1/2 -translate-y-1/2 w-full h-full z-0 ',
+        'absolute left-1/4 p-4 -top-1/4 w-full h-full z-0 grid',
         className,
       )}
       {...rest}
     >
-      {rows.map((_, i) => (
-        <motion.div
-          key={`row` + i}
-          className="w-16 h-8  border-l  border-slate-900 relative"
-        >
-          {cols.map((_, j) => (
-            <motion.div
-              whileHover={{
-                backgroundColor: `var(${getRandomColor()})`,
-                transition: { duration: 0 },
-              }}
-              animate={{
-                transition: { duration: 2 },
-              }}
-              key={`col` + j}
-              className="w-16 h-8  border-r border-t border-slate-900 relative"
-            >
-              {j % 2 === 0 && i % 2 === 0 ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="absolute h-6 w-10 -top-[14px] -left-[22px] text-slate-900 stroke-[1px] pointer-events-none"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 6v12m6-6H6"
-                  />
-                </svg>
-              ) : null}
-            </motion.div>
-          ))}
-        </motion.div>
-      ))}
+      {Array.from({ length: NUM_ROWS * NUM_COLS }).map((_, idx) => {
+        const row = Math.floor(idx / NUM_COLS);
+        const col = idx % NUM_COLS;
+        const color = colorGrid[row][col];
+
+        return (
+          <motion.div
+            key={idx}
+            whileHover={{
+              backgroundColor: `var(${color})`,
+              transition: { duration: 0 },
+            }}
+            animate={{ transition: { duration: 2 } }}
+            className="relative border border-slate-900 w-16 h-8 flex items-center justify-center text-slate-900 pointer-events-none"
+          >
+            {row % 2 === 0 && col % 2 === 0 && (
+              <span className="text-lg font-bold select-none">+</span>
+            )}
+          </motion.div>
+        );
+      })}
     </div>
   );
 };
 
-export const Boxes = React.memo(BoxesCore);
+// Set the display name to avoid ESLint warnings
+BoxesCore.displayName = 'BoxesCore';
+
+// Lazy render only when in view
+export const Boxes = React.memo(() => {
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) setInView(true);
+    });
+
+    const el = document.getElementById('boxes-root');
+    if (el) observer.observe(el);
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div id="boxes-root" className="relative w-full h-full">
+      {inView && <BoxesCore />}
+    </div>
+  );
+});
+
+// Set the display name for Boxes component
+Boxes.displayName = 'Boxes';
